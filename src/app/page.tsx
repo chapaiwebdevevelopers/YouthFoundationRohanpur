@@ -11,15 +11,13 @@ export default function Home() {
   return (
     <div>
       <Hero></Hero>
+      <main>
       <Features></Features>
       <Event></Event>
       <Favorites></Favorites>
       <Team></Team>
       <Gallery></Gallery>
       <Newsletter></Newsletter>
-      
-      <main>
-       
       </main>
     </div>
 
