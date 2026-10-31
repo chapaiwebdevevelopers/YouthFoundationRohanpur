@@ -1,26 +1,237 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-geist-sans);
+  --font-logo: var(--font-lora);
+
+  /* Brand palette */
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-soft: var(--primary-soft);
+  --color-ink: var(--text);
+  --color-ink-soft: var(--text-soft);
+  --color-ink-muted: var(--muted);
+
+  /* Glass surfaces */
+  --color-glass: var(--glass);
+  --color-glass-strong: var(--glass-strong);
+  --color-glass-soft: var(--glass-soft);
+  --color-glass-border: var(--glass-border);
+  --color-glass-border-soft: var(--glass-border-soft);
+  --color-glass-highlight: var(--glass-highlight);
+  --shadow-glass: var(--glass-shadow);
+  --shadow-glass-sm: var(--glass-shadow-sm);
+  --shadow-glass-lg: var(--glass-shadow-lg);
+
+  /* Backwards-compatible aliases */
+  --color-brand: var(--primary);
+  --color-brand-dark: var(--text);
+  --color-brand-foreground: var(--btn-primary-fg);
+  --color-brand-soft: var(--tint-primary);
+  --color-navbar: var(--navbar);
+  --color-nav-muted: var(--muted);
+
+  /* shadcn tokens */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--tint-primary);
+  --color-muted-foreground: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  color-scheme: light;
+  --primary: #0b5d3b;
+  --primary-strong: #083f28;
+  --primary-soft: #2f8f65;
+  --primary-glow: rgba(11, 93, 59, 0.28);
+  --primary-grad: linear-gradient(135deg, #0e6b45, #083f28);
+  --btn-primary-fg: #f4fbf7;
+  --text: #0f2a20;
+  --text-soft: #3c544a;
+  --muted: #6e8278;
+  --glass: rgba(255, 255, 255, 0.55);
+  --glass-strong: rgba(255, 255, 255, 0.84);
+  --glass-soft: rgba(255, 255, 255, 0.35);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-border-soft: rgba(11, 93, 59, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.8);
+  --glass-shadow: 0 12px 40px -12px rgba(11, 60, 40, 0.26);
+  --glass-shadow-sm: 0 6px 20px -8px rgba(11, 60, 40, 0.18);
+  --glass-shadow-lg: 0 30px 60px -24px rgba(11, 60, 40, 0.36);
+  --tint-primary: rgba(11, 93, 59, 0.1);
+  --tint-primary-2: rgba(47, 143, 101, 0.14);
+  --dashed: rgba(11, 93, 59, 0.35);
+  --thumb-grad: linear-gradient(140deg, #0e6b45, #083f28);
+  --blur: saturate(170%) blur(18px);
+  --blur-sm: saturate(165%) blur(12px);
+  --blur-lg: saturate(175%) blur(26px);
+  --radius: 18px;
+  --radius-sm: 12px;
+  --radius-lg: 28px;
+
+  /* shadcn mappings */
+  --background: #f2f8f3;
+  --foreground: var(--text);
+  --card: var(--glass-strong);
+  --card-foreground: var(--text);
+  --popover: var(--glass-strong);
+  --popover-foreground: var(--text);
+  --primary-foreground: var(--btn-primary-fg);
+  --secondary: var(--tint-primary);
+  --secondary-foreground: var(--text);
+  --muted-foreground: var(--muted);
+  --accent: var(--tint-primary-2);
+  --accent-foreground: var(--text);
+  --destructive: #b42318;
+  --border: var(--glass-border-soft);
+  --input: var(--glass-border-soft);
+  --ring: var(--primary);
+  --chart-1: #0b5d3b;
+  --chart-2: #2f8f65;
+  --chart-3: #5fb58f;
+  --chart-4: #9ad4b8;
+  --chart-5: #cfe9dc;
+  --sidebar: var(--glass-strong);
+  --sidebar-foreground: var(--text);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--btn-primary-fg);
+  --sidebar-accent: var(--tint-primary);
+  --sidebar-accent-foreground: var(--text);
+  --sidebar-border: var(--glass-border-soft);
+  --sidebar-ring: var(--primary);
+
+  /* legacy aliases */
+  --brand: var(--primary);
+  --brand-dark: var(--text);
+  --brand-foreground: var(--btn-primary-fg);
+  --brand-soft: var(--tint-primary);
+  --navbar: #eef4ef;
+  --nav-muted: var(--muted);
+}
+
+.dark {
+  color-scheme: dark;
+  --primary: #3fcb93;
+  --primary-strong: #71e8bc;
+  --primary-soft: #2f8f65;
+  --primary-glow: rgba(63, 203, 147, 0.3);
+  --primary-grad: linear-gradient(135deg, #2fbe8c, #146046);
+  --btn-primary-fg: #04160f;
+  --text: #eaf6f0;
+  --text-soft: #b9cec3;
+  --muted: #94ab9f;
+  --glass: rgba(12, 24, 19, 0.62);
+  --glass-strong: rgba(14, 27, 21, 0.92);
+  --glass-soft: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-border-soft: rgba(255, 255, 255, 0.09);
+  --glass-highlight: rgba(255, 255, 255, 0.12);
+  --glass-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.62);
+  --glass-shadow-sm: 0 6px 20px -8px rgba(0, 0, 0, 0.5);
+  --glass-shadow-lg: 0 30px 60px -24px rgba(0, 0, 0, 0.72);
+  --tint-primary: rgba(63, 203, 147, 0.12);
+  --tint-primary-2: rgba(63, 203, 147, 0.18);
+  --dashed: rgba(63, 203, 147, 0.35);
+  --thumb-grad: linear-gradient(140deg, #2fbe8c, #146046);
+
+  --background: #08120e;
+  --foreground: var(--text);
+  --card: var(--glass-strong);
+  --card-foreground: var(--text);
+  --popover: var(--glass-strong);
+  --popover-foreground: var(--text);
+  --primary-foreground: var(--btn-primary-fg);
+  --secondary: var(--tint-primary);
+  --secondary-foreground: var(--text);
+  --muted-foreground: var(--muted);
+  --accent: var(--tint-primary-2);
+  --accent-foreground: var(--text);
+  --destructive: #ff7b6e;
+  --border: var(--glass-border-soft);
+  --input: var(--glass-border-soft);
+  --ring: var(--primary);
+  --chart-1: #3fcb93;
+  --chart-2: #2fbe8c;
+  --chart-3: #2f8f65;
+  --chart-4: #1f6b4c;
+  --chart-5: #14452f;
+  --sidebar: var(--glass-strong);
+  --sidebar-foreground: var(--text);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--btn-primary-fg);
+  --sidebar-accent: var(--tint-primary);
+  --sidebar-accent-foreground: var(--text);
+  --sidebar-border: var(--glass-border-soft);
+  --sidebar-ring: var(--primary);
+
+  --brand: var(--primary);
+  --brand-dark: var(--text);
+  --brand-foreground: var(--btn-primary-fg);
+  --brand-soft: var(--tint-primary);
+  --navbar: #0b1712;
+  --nav-muted: var(--muted);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(
+        55rem 32rem at 12% -12%,
+        color-mix(in oklab, var(--primary) 16%, transparent),
+        transparent 62%
+      ),
+      radial-gradient(
+        45rem 26rem at 88% -8%,
+        color-mix(in oklab, var(--primary) 11%, transparent),
+        transparent 58%
+      );
+    background-attachment: fixed;
+  }
+  html {
+    @apply font-sans;
+  }
 }
