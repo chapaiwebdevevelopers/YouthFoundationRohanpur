@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { redirect, usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
 import { 
   HeartHandshake, 
@@ -39,29 +39,31 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { authClient } from "@/lib/auth-client"
 
 const navItems = [
   { name: "Home", href: "/" },
   { name: "Upcoming Events", href: "/events" },
-  { name: "Features", href: "/#features" },
-  { name: "Our Team", href: "/#team" },
-  { name: "Gallery", href: "/#gallery" },
+  { name: "Features", href: "/features" },
+  { name: "Our Team", href: "/team" },
+  { name: "Gallery", href: "/gallery" },
 ]
 
-export default function Header() {
+export default  function Header() {
   const pathname = usePathname()
   const { setTheme, resolvedTheme } = useTheme()
   const [isOpen, setIsOpen] = React.useState(false)
 
   // Mock authentication state (Replace with your actual auth hook, e.g., NextAuth/BetterAuth)
-  const isLoggedIn = true 
-  const user = {
-    name: "Ayesha Khatun",
-    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80",
-  }
+  const { data: session } = authClient.useSession()
+  // console.log("SessionData nav",session)
+  const isLoggedIn = session?.user ? true : false;
 
-  const handleLogout = () => {
-    // Add logout logic here
+  // console.log(session?.user)
+  const user = session?.user
+  const handleLogout = async() => {
+     await authClient.signOut();
+     redirect('/login')
   }
 
   return (
@@ -140,14 +142,14 @@ export default function Header() {
                       }
                     >
                       <Avatar className="h-full w-full">
-                        <AvatarImage src={user.avatar} alt={user.name} />
+                        <AvatarImage src={user?.image || ""} alt={user?.name} />
                         <AvatarFallback className="bg-[var(--tint-primary)] font-bold text-primary">
-                          {user.name.charAt(0)}
+                          {user?.name.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
                     </TooltipTrigger>
                     <TooltipContent side="bottom" className="text-xs font-semibold">
-                      <p>{user.name}</p>
+                      <p>{user?.name}</p>
                     </TooltipContent>
                     <DropdownMenuContent align="end" className="w-48 rounded-xl">
                       <DropdownMenuItem
@@ -177,7 +179,7 @@ export default function Header() {
                         onClick={handleLogout}
                         className="cursor-pointer"
                       >
-                        <LogOut className="mr-2 h-4 w-4" />
+                        <LogOut onClick={handleLogout} className="mr-2 h-4 w-4" />
                         Logout
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -255,13 +257,13 @@ export default function Header() {
                   <div className="flex flex-col space-y-2">
                     <div className="flex items-center gap-3 mb-2 px-2">
                       <Avatar className="h-10 w-10 border">
-                        <AvatarImage src={user.avatar} alt={user.name} />
+                        <AvatarImage src={user?.image || ""} alt={user?.name} />
                         <AvatarFallback className="bg-[var(--tint-primary)] font-bold text-primary">
-                          {user.name.charAt(0)}
+                          {user?.name.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col">
-                        <span className="text-sm font-semibold">{user.name}</span>
+                        <span className="text-sm font-semibold">{user?.name}</span>
                         <span className="text-xs text-muted-foreground">Organizer</span>
                       </div>
                     </div>
