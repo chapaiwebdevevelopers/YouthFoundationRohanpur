@@ -210,14 +210,13 @@ function TeamCard({ member }: { member: TeamMember }) {
         {member.socials.map(({ href, label, icon }) => (
           <Button
             key={label}
-            asChild
             variant="ghost"
             size="icon"
+            nativeButton={false}
             className="h-8 w-8 rounded-full text-muted-foreground hover:bg-primary/10 hover:text-primary"
+            render={<a href={href} aria-label={label} />}
           >
-            <a href={href} aria-label={label}>
-              <SocialIcon icon={icon} className="h-4 w-4" />
-            </a>
+            <SocialIcon icon={icon} className="h-4 w-4" />
           </Button>
         ))}
       </div>
@@ -269,11 +268,14 @@ export default function Team() {
               </p>
             </div>
           </div>
-          <Button asChild size="lg" className="rounded-full px-6">
-            <Link href="/register">
-              <UserPlus className="mr-2 h-4 w-4" />
-              Become a Volunteer
-            </Link>
+          <Button
+            size="lg"
+            className="rounded-full px-6"
+            nativeButton={false}
+            render={<Link href="/register" />}
+          >
+            <UserPlus className="mr-2 h-4 w-4" />
+            Become a Volunteer
           </Button>
         </Card>
       </div>

@@ -1,10 +1,10 @@
 import Gallery from "@/components/Gallery"
-import Event from "@/components/homepage/event"
-import Favorites from "@/components/homepage/favorites"
+import Event from "@/components/homepage/upcomingevent"
 import Features from "@/components/homepage/features"
 import Hero from "@/components/homepage/hero"
 import Newsletter from "@/components/homepage/newsletter"
 import Team from "@/components/team"
+import ExpiredEvents from "@/components/homepage/expiredEvents"
 
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
       <main>
       <Features></Features>
       <Event></Event>
-      <Favorites></Favorites>
+      <ExpiredEvents></ExpiredEvents>
       <Team></Team>
       <Gallery></Gallery>
       <Newsletter></Newsletter>

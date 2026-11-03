@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
    images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
+      // Event thumbnails are user-provided URLs from the create form.
+      { protocol: "https", hostname: "**" },
     ],
   },
   experimental: {

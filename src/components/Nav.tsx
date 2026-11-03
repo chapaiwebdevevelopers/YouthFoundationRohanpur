@@ -44,6 +44,8 @@ import { authClient } from "@/lib/auth-client"
 const navItems = [
   { name: "Home", href: "/" },
   { name: "Upcoming Events", href: "/events" },
+  { name: "Create Events", href: "/events/create" },
+  { name: "My Event", href: "/events/manage" },
   { name: "Features", href: "/features" },
   { name: "Our Team", href: "/team" },
   { name: "Gallery", href: "/gallery" },

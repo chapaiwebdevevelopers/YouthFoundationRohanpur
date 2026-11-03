@@ -1,21 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  BookOpen,
-  Clock,
-  HandHeart,
+  CalendarDays,
+  Clock3,
   Heart,
   HeartPulse,
   MapPin,
-  Shirt,
-  ShoppingBasket,
-  Sparkles,
-  Sprout,
-  Users,
-  type LucideIcon,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -23,172 +16,146 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-/* ------------------------------ types ------------------------------ */
-
-export type EventType =
-  | "Donation"
-  | "Cleanup"
-  | "Plantation"
-  | "Winter Relief"
-  | "Food Drive"
-  | "Health Camp"
-  | "Education";
-
 export type EventItem = {
   _id?: string;
-  eventTitle: string;
-  eventType: EventType;
-  eventDate: string; // ISO string, e.g. "2024-12-22T10:00:00Z"
-  eventTime?: string; // optional, e.g. "10:00 AM – 2:00 PM"
+  title: string;
+  category: string;
   location: string;
-  thumbnailImage: string;
-  description: string;
-  organizerEmail: string;
-  createdAt?: string;
-  status?: "published" | "draft";
-  // UI-derived fields (returned by API / aggregated)
+  thumbnail?: string;
+  description?: string;
+  userId?: string;
+  userEmail?: string;
+  date?: string;
   likes?: number;
   attendees?: number;
 };
 
-/* --------------------------- icon map ------------------------------ */
-
-// FIX: `Category` → `EventType`, and every union member must be a key.
-const categoryIcon: Record<EventType, LucideIcon> = {
-  Donation: HandHeart,
-  Cleanup: Sparkles,
-  Plantation: Sprout,
-  "Winter Relief": Shirt,
-  "Food Drive": ShoppingBasket,
-  "Health Camp": HeartPulse,
-  Education: BookOpen,
-};
-
-/* --------------------------- helpers ------------------------------- */
-
-function splitDate(iso: string): { day: string; month: string } {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return { day: "--", month: "---" };
-  return {
-    day: String(d.getDate()).padStart(2, "0"),
-    month: d.toLocaleString("en-US", { month: "short" }),
-  };
+function categoryLabel(category: string) {
+  return category
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
-/* ------------------------- event card ------------------------------ */
+function formatDate(date?: string) {
+  if (!date) return "Date to be announced";
+
+  const parsedDate = new Date(date);
+  if (Number.isNaN(parsedDate.getTime())) return "Date to be announced";
+
+  return parsedDate.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function formatTime(date?: string) {
+  if (!date) return null;
+
+  const parsedDate = new Date(date);
+  if (Number.isNaN(parsedDate.getTime())) return null;
+
+  return parsedDate.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
 
 const EventCard = ({ event }: { event: EventItem }) => {
-  const [imgFailed, setImgFailed] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(event.likes ?? 0);
 
-  // FIX: event.likes doesn't exist on EventItem → fallback to 0
-  const [likes, setLikes] = useState({
-    count: event.likes ?? 0,
-    liked: false,
-  });
+  const time = formatTime(event.date);
+  const imageUrl = event.thumbnail?.trim();
+  const eventUrl = event._id ? `/events/${event._id}` : "/events";
 
-  // FIX: event.category → event.eventType
-  const CategoryIcon = categoryIcon[event.eventType] ?? HandHeart;
-
-  // FIX: event.date (object) → parsed from event.eventDate (string)
-  const { day, month } = useMemo(
-    () => splitDate(event.eventDate),
-    [event.eventDate]
-  );
-
-  const toggleLike = () =>
-    setLikes((s) => ({
-      liked: !s.liked,
-      count: s.liked ? s.count - 1 : s.count + 1,
-    }));
+  const toggleLike = () => {
+    setLiked((currentLiked) => {
+      setLikeCount((currentCount) => currentCount + (currentLiked ? -1 : 1));
+      return !currentLiked;
+    });
+  };
 
   return (
-    <Card className="group flex flex-col overflow-hidden rounded-2xl border-border/60 py-0 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-      {/* --- thumbnail --- */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-        <div className="absolute inset-0 grid place-items-center text-muted-foreground/30">
-          <CategoryIcon className="h-16 w-16" strokeWidth={1.2} />
-        </div>
-
-        {!imgFailed && (
+    <Card className="group flex h-full flex-col overflow-hidden rounded-2xl border-border/60 py-0 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+        {!imageFailed && imageUrl ? (
           <Image
-            // FIX: event.image → event.thumbnailImage
-            src={event.thumbnailImage}
-            // FIX: event.title → event.eventTitle
-            alt={event.eventTitle}
+            src={imageUrl}
+            alt={event.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
-            onError={() => setImgFailed(true)}
+            onError={() => setImageFailed(true)}
           />
+        ) : (
+          <div className="grid h-full place-items-center text-primary/40">
+            <HeartPulse className="size-14" strokeWidth={1.2} />
+          </div>
         )}
 
-        {/* category badge — FIX: event.category → event.eventType */}
-        <Badge
-          variant="secondary"
-          className="absolute left-3 top-3 gap-1.5 rounded-full bg-background/90 text-xs font-medium text-foreground backdrop-blur"
-        >
-          <CategoryIcon className="h-3.5 w-3.5 text-primary" />
-          {event.eventType}
-        </Badge>
-
-        {/* date chip — FIX: uses parsed day/month */}
-        <div className="absolute right-3 top-3 flex w-11 flex-col items-center rounded-lg bg-background/90 px-2 py-1 backdrop-blur">
-          <span className="text-sm font-bold leading-none">{day}</span>
-          <span className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
-            {month}
-          </span>
+        <div className="absolute inset-x-0 top-0 flex items-start justify-between p-3">
+          <Badge className="gap-1.5 rounded-full bg-background/90 text-foreground backdrop-blur">
+            <HeartPulse className="size-3.5 text-primary" />
+            {categoryLabel(event.category)}
+          </Badge>
+          <div className="rounded-lg bg-background/90 px-2.5 py-1.5 text-xs font-medium text-foreground backdrop-blur">
+            <CalendarDays className="mr-1 inline size-3.5 text-primary" />
+            {event.date ? formatDate(event.date) : "Date TBD"}
+          </div>
         </div>
       </div>
 
-      {/* --- body --- */}
-      <div className="flex flex-1 flex-col gap-3 p-5">
-        <h3 className="line-clamp-2 text-lg font-semibold leading-snug">
-          {/* FIX: event.title → event.eventTitle */}
-          {event.eventTitle}
-        </h3>
+      <div className="flex flex-1 flex-col gap-4 p-5">
+        <div>
+          <h3 className="line-clamp-2 text-xl font-semibold leading-snug">
+            {event.title}
+          </h3>
+          {event.description && (
+            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+              {event.description}
+            </p>
+          )}
+        </div>
 
-        <div className="space-y-1.5 text-sm text-muted-foreground">
-          <p className="flex items-center gap-2">
-            <MapPin className="h-4 w-4 shrink-0 text-primary/70" />
-            <span className="truncate">{event.location}</span>
+        <div className="space-y-2 text-sm text-muted-foreground">
+          <p className="flex items-start gap-2">
+            <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
+            <span>{event.location}</span>
           </p>
           <p className="flex items-center gap-2">
-            <Clock className="h-4 w-4 shrink-0 text-primary/70" />
-            {/* FIX: event.time → event.eventTime ?? fallback */}
-            <span className="truncate">{event.eventTime ?? "Time TBD"}</span>
+            <Clock3 className="size-4 shrink-0 text-primary" />
+            <span>{formatDate(event.date)}{time ? ` · ${time}` : ""}</span>
           </p>
         </div>
 
-        <div className="mt-auto flex items-center justify-between border-t border-border/60 pt-3">
-          <div className="flex items-center gap-3 text-sm">
-            <span className="flex items-center gap-1.5 text-muted-foreground">
-              <Users className="h-4 w-4" />
-              {/* FIX: event.attendees may be undefined */}
-              {event.attendees ?? 0}
-            </span>
+        <div className="mt-auto flex items-center justify-between border-t border-border/60 pt-4">
+          <button
+            type="button"
+            onClick={toggleLike}
+            aria-label={liked ? "Unlike this event" : "Like this event"}
+            aria-pressed={liked}
+            className={cn(
+              "flex items-center gap-1.5 text-sm transition-colors",
+              liked
+                ? "text-red-500"
+                : "text-muted-foreground hover:text-red-500"
+            )}
+          >
+            <Heart className={cn("size-4", liked && "fill-current")} />
+            <span>{likeCount}</span>
+          </button>
 
-            <button
-              type="button"
-              onClick={toggleLike}
-              aria-pressed={likes.liked}
-              aria-label={likes.liked ? "Unlike this event" : "Like this event"}
-              className={cn(
-                "flex items-center gap-1.5 transition-colors",
-                likes.liked
-                  ? "text-red-500"
-                  : "text-muted-foreground hover:text-red-500"
-              )}
-            >
-              <Heart
-                className={cn("h-4 w-4", likes.liked && "fill-current")}
-              />
-              <span className="tabular-nums">{likes.count}</span>
-            </button>
-          </div>
-
-          <Button asChild size="sm" className="rounded-full px-4">
-            {/* FIX: event.id → event._id */}
-            <Link href={`/events/${event._id ?? ""}`}>View</Link>
+          <Button
+            size="sm"
+            className="rounded-full px-5"
+            nativeButton={false}
+            render={<Link href={eventUrl} />}
+          >
+            View event
           </Button>
         </div>
       </div>
