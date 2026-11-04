@@ -45,7 +45,7 @@ export default function Newsletter() {
   }
 
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-10">
       <div className="container mx-auto max-w-7xl px-4">
         <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-8 md:p-12 lg:p-16">
           {/* decorative glow */}

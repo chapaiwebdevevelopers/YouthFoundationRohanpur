@@ -47,7 +47,7 @@ const ExpiredEvents = async() => {
 
         {/* grid */}
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {expiredEvents.map((event:IEventItem) => (
+            {expiredEvents.slice(0,6).map((event:IEventItem) => (
             <EventCard key={event._id} event={event} />
             ))}
         </div>

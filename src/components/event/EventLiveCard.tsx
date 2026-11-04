@@ -1,56 +1,50 @@
-'use client'
+"use client";
+
 import { format } from "date-fns";
 import {
       CalendarIcon,
-      ChevronDownIcon,
       CircleCheckIcon,
       CircleIcon,
-      FileTextIcon,
       ImageIcon,
       MapPinIcon,
-      TagIcon,
-      TypeIcon,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import { Badge } from "@/components/ui/badge";
 import {
       Card,
       CardContent,
       CardDescription,
-      CardFooter,
       CardHeader,
       CardTitle,
 } from "@/components/ui/card";
-import {
-      Field,
-      FieldGroup,
-      FieldLabel,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import {
-      Popover,
-      PopoverContent,
-      PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-      Select,
-      SelectContent,
-      SelectGroup,
-      SelectItem,
-      SelectTrigger,
-      SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 
+export type EventPreviewForm = {
+      title: string;
+      location: string;
+      thumbnail: string;
+      description: string;
+};
 
-const EventLiveCard = ({form}) => {
-          const updateField =
-            (key: keyof typeof form) =>
-            (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-                  const value = e.target.value;
-                  setForm((current) => ({ ...current, [key]: value }));
-            };
+export type EventPreviewChecklistItem = {
+      label: string;
+      done: boolean;
+};
+
+type EventLiveCardProps = {
+      form: EventPreviewForm;
+      date?: Date;
+      categoryLabel?: string;
+      checklist: EventPreviewChecklistItem[];
+      completed: number;
+};
+
+const EventLiveCard = ({
+      form,
+      date,
+      categoryLabel,
+      checklist,
+      completed,
+}: EventLiveCardProps) => {
     return (
                                <aside className="space-y-4 lg:sticky lg:top-6">
                               <div className="space-y-3">

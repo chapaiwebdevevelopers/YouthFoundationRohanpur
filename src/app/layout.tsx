@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Geist, Geist_Mono, Lora } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
@@ -42,7 +43,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           enableSystem
           disableTransitionOnChange
         >
-          <Nav />
+          <Suspense
+            fallback={
+              <div className="sticky top-0 z-50 h-16 w-full border-b border-glass-border-soft bg-glass" />
+            }
+          >
+            <Nav />
+          </Suspense>
           {children}
         </ThemeProvider>
         <SiteFooter></SiteFooter>

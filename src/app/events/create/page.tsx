@@ -1,10 +1,9 @@
 'use client'
 import * as React from "react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import {
       CalendarIcon,
-      ChevronDownIcon,
       CircleCheckIcon,
       CircleIcon,
       FileTextIcon,
@@ -54,32 +53,13 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { authClient } from "@/lib/auth-client";
-import { projectEntrypointsSubscribe } from "next/dist/build/swc/generated-native";
 import { toast } from "@/components/ui/toast";
-import { refresh } from "next/cache";
-
-
-
-const eventCategories = [
-  { label: "Food Distribution", value: "food-distribution" },
-  { label: "Poor & Needy Support", value: "poor-needy-support" },
-  { label: "Zakat & Sadaqah", value: "zakat-sadaqah" },
-  { label: "Islamic Education", value: "islamic-education" },
-  { label: "Orphan Support", value: "orphan-support" },
-  { label: "Medical & Healthcare Aid", value: "medical-healthcare-aid" },
-  { label: "Ramadan & Iftar Distribution", value: "ramadan-iftar" },
-  { label: "Winter Clothing Distribution", value: "winter-clothing" },
-  { label: "Qurbani Meat Distribution", value: "qurbani-meat-distribution" },
-  { label: "Mosque & Madrasa Support", value: "mosque-madrasa-support" },
-  { label: "Islamic Awareness Programs", value: "islamic-awareness" },
-  { label: "Community Welfare", value: "community-welfare" },
-  { label: "Emergency Relief", value: "emergency-relief" },
-  { label: "Marriage & Family Support", value: "marriage-family-support" },
-  { label: "Fundraising & Donations", value: "fundraising-donations" },
-  { label: "Other", value: "other" },
-];
+import { eventCategories } from "@/lib/event-categories";
+import { startOfDay } from "date-fns";
 
 export  default  function  CreateEventPage() {
+      const today = startOfDay(new Date());
+      const router = useRouter();
       const [date, setDate] = React.useState<Date>();
       const [form, setForm] = React.useState({
             title: "",
@@ -137,7 +117,7 @@ export  default  function  CreateEventPage() {
                     title: "Event created successfully!",
                     description: ` event Date : ${date} at ${data.location}`,
                   });
-                  redirect(`/events`);
+                  router.push(`/events`);
             }else{
                   alert("Failed to create event.");
             }
@@ -188,29 +168,37 @@ export  default  function  CreateEventPage() {
                                                 </Field>
 
                                                 <div className="grid gap-4 sm:grid-cols-2">
-                                                      <Field>
-                                                            <FieldLabel htmlFor="event-date">
-                                                                  <CalendarIcon className="size-4 text-muted-foreground" />
-                                                                  Event Date *
-                                                            </FieldLabel>
-                                                            <Popover>
-      <PopoverTrigger
-        render={
-          <Button
-            variant="outline"
-            data-empty={!date}
-            className="justify-start text-left font-normal data-[empty=true]:text-muted-foreground"
-          />
-        }
-      >
-        <CalendarIcon />
-        {date ? format(date, "PPP") : <span>Pick a date</span>}
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
-        <Calendar mode="single" selected={date} onSelect={setDate} />
-      </PopoverContent>
-    </Popover>
-                                                      </Field>
+<Field>
+  <FieldLabel htmlFor="event-date">
+    <CalendarIcon className="size-4 text-muted-foreground" />
+    Event Date *
+  </FieldLabel>
+
+  <Popover>
+    <PopoverTrigger
+      render={
+        <Button
+          variant="outline"
+          data-empty={!date}
+          className="justify-start text-left font-normal data-[empty=true]:text-muted-foreground"
+        />
+      }
+    >
+      <CalendarIcon />
+
+      {date ? format(date, "PPP") : <span>Pick a date</span>}
+    </PopoverTrigger>
+
+    <PopoverContent className="w-auto p-0">
+      <Calendar
+        mode="single"
+        selected={date}
+        onSelect={setDate}
+        disabled={(day) => day < today}
+      />
+    </PopoverContent>
+  </Popover>
+</Field>
 
                                                       <Field>
                                                             <FieldLabel htmlFor="event-category">

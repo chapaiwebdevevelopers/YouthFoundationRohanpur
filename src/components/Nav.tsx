@@ -45,9 +45,9 @@ const navItems = [
   { name: "Home", href: "/" },
   { name: "Upcoming Events", href: "/events" },
   { name: "Create Events", href: "/events/create" },
-  { name: "My Event", href: "/events/manage" },
-  { name: "Features", href: "/features" },
-  { name: "Our Team", href: "/team" },
+  { name: "Manage Event", href: "/events/manage" },
+  { name: "Joined Event", href: "/events/joined" },
+  // { name: "Our Team", href: "/team" },
   { name: "Gallery", href: "/gallery" },
 ]
 
@@ -155,21 +155,21 @@ export default  function Header() {
                     </TooltipContent>
                     <DropdownMenuContent align="end" className="w-48 rounded-xl">
                       <DropdownMenuItem
-                        render={<Link href="/create-event" />}
+                        render={<Link href="/events/create" />}
                         className="cursor-pointer"
                       >
                         <PlusCircle className="mr-2 h-4 w-4 text-muted-foreground" />
                         Create Event
                       </DropdownMenuItem>
                       <DropdownMenuItem
-                        render={<Link href="/manage-events" />}
+                        render={<Link href="/events/manage" />}
                         className="cursor-pointer"
                       >
                         <SlidersHorizontal className="mr-2 h-4 w-4 text-muted-foreground" />
                         Manage Events
                       </DropdownMenuItem>
                       <DropdownMenuItem
-                        render={<Link href="/joined-events" />}
+                        render={<Link href="/events/joined" />}
                         className="cursor-pointer"
                       >
                         <CalendarCheck className="mr-2 h-4 w-4 text-muted-foreground" />

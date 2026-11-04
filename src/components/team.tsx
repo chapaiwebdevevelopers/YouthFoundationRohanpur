@@ -272,7 +272,7 @@ export default function Team() {
             size="lg"
             className="rounded-full px-6"
             nativeButton={false}
-            render={<Link href="/register" />}
+            render={<Link href="/signup" />}
           >
             <UserPlus className="mr-2 h-4 w-4" />
             Become a Volunteer

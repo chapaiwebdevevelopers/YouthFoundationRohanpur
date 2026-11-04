@@ -104,7 +104,7 @@ export default function Hero() {
               size="lg"
               variant="outline"
               nativeButton={false}
-              render={<Link href="/create-event" />}
+              render={<Link href="/events/create" />}
               className="rounded-full px-6"
             >
               <PlusCircle className="mr-2 h-4 w-4" />
