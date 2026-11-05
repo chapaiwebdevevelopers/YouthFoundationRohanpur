@@ -91,9 +91,17 @@ export  default  function  CreateEventPage() {
 
       const handleSubmitEvents =async (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
+
+
+
             const eventData = new FormData(e.currentTarget);
+            console.log("FormData problem",eventData)
             const data = Object.fromEntries(eventData.entries());
             console.log("Event Data before Submitting:", data);
+                        // jwt token verification 
+            const { data: authToken,error } = await authClient.token();
+            const token = authToken?.token
+            console.log("auth",authToken)
             
        const { data: session } = await authClient.getSession()
        const userId = session?.user?.id; // Assuming the user ID is stored in the session object
@@ -104,7 +112,8 @@ export  default  function  CreateEventPage() {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/events`,{
                 method: 'POST',
                 headers:{
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify(eventDataWithUserId)
                 
