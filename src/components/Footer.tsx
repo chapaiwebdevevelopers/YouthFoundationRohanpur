@@ -29,9 +29,9 @@ type SocialLink = {
 const exploreLinks = [
   { href: "/", label: "Home" },
   { href: "/events", label: "Upcoming Events" },
-  { href: "/create-event", label: "Create Event" },
-  { href: "/joined-events", label: "Joined Events" },
-  { href: "/manage-events", label: "Manage Events" },
+  { href: "/events/create", label: "Create Event" },
+  { href: "/events/joined", label: "Joined Events" },
+  { href: "/events/manage", label: "Manage Events" },
 ];
 
 const programLinks = [

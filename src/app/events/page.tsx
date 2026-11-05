@@ -1,16 +1,14 @@
-import EventCard from '@/components/sharedComponent/EventCard';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import EventCard from '@/components/sharedComponent/EventCard';
 import { IEventItem } from '@/type/event';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
-
-
-const EventPage =async () => {
+const EventList = async () => {
    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/events/upcoming`)
   const upcomingEvents = await response.json()
-console.log(upcomingEvents);
 
     return (
         <div>
@@ -48,9 +46,9 @@ console.log(upcomingEvents);
 
         {/* grid */}
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {upcomingEvents.map((event:IEventItem) => (
+          {upcomingEvents.map((event: IEventItem) => (
             <EventCard key={event._id} event={event} />
-            ))}
+          ))}
         </div>
       </div>
     </section>
@@ -58,5 +56,11 @@ console.log(upcomingEvents);
         </div>
     );
 };
+
+const EventPage = () => (
+  <Suspense fallback={<p>Loading events...</p>}>
+    <EventList />
+  </Suspense>
+);
 
 export default EventPage;

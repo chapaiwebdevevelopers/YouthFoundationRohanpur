@@ -1,14 +1,14 @@
 
 import EventCard from '@/components/sharedComponent/EventCard';
-import { Button } from '@/components/ui/button';
 import { auth } from '@/lib/auth';
 import { IEventItem } from '@/type/event';
 import { Heart } from 'lucide-react';
 import { headers } from 'next/headers';
 import Link from 'next/link';
 import React from 'react';
+import { Suspense } from 'react';
 
-const MyJoinedEvent = async() => {
+const MyJoinedEventContent = async() => {
     const session = await auth.api.getSession({
     headers: await headers(),
      });
@@ -80,4 +80,10 @@ const MyJoinedEvent = async() => {
     );
 };
 
-export default MyJoinedEvent;
+const MyJoinedEvent = () => (
+    <Suspense fallback={<p>Loading joined events...</p>}>
+        <MyJoinedEventContent />
+    </Suspense>
+);
+
+export default MyJoinedEvent

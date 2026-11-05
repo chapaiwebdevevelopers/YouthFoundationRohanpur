@@ -7,10 +7,11 @@
 import GalleryCard from "@/components/galleryCard";
 import { Badge } from "@/components/ui/badge";
 import { IEventItem } from "@/type/event";
+import { Suspense } from "react";
 // import { cn } from "@/lib/utils";
 
 
-export default async function GalleryPage() {
+async function GalleryContent() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/events`)
   const events =await  response.json()
   console.log("event from gallery",events)
@@ -43,5 +44,13 @@ export default async function GalleryPage() {
       </div>
     </section>
     
+  );
+}
+
+export default function GalleryPage() {
+  return (
+    <Suspense fallback={<p>Loading gallery...</p>}>
+      <GalleryContent />
+    </Suspense>
   );
 }

@@ -272,7 +272,7 @@ export default  function Header() {
                     <Button
                       variant="ghost"
                       nativeButton={false}
-                      render={<Link href="/create-event" onClick={() => setIsOpen(false)} />}
+                      render={<Link href="/events/create" onClick={() => setIsOpen(false)} />}
                       className="justify-start"
                     >
                       <PlusCircle className="mr-2 h-4 w-4" /> Create Event
@@ -280,7 +280,7 @@ export default  function Header() {
                     <Button
                       variant="ghost"
                       nativeButton={false}
-                      render={<Link href="/manage-events" onClick={() => setIsOpen(false)} />}
+                      render={<Link href="/events/manage" onClick={() => setIsOpen(false)} />}
                       className="justify-start"
                     >
                       <SlidersHorizontal className="mr-2 h-4 w-4" /> Manage Events
@@ -288,7 +288,7 @@ export default  function Header() {
                     <Button
                       variant="ghost"
                       nativeButton={false}
-                      render={<Link href="/joined-events" onClick={() => setIsOpen(false)} />}
+                      render={<Link href="/events/joined" onClick={() => setIsOpen(false)} />}
                       className="justify-start"
                     >
                       <CalendarCheck className="mr-2 h-4 w-4" /> Joined Events
