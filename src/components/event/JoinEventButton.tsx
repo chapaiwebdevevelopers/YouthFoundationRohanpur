@@ -17,6 +17,7 @@ const JoinEventButton = ({ event }: JoinEventButtonProps) => {
 
       const handleJoinedEvent = async () => {
             const user = session?.user;
+            
 
             if (!user) {
                   setMessage("Please log in to join this event.");
@@ -26,6 +27,10 @@ const JoinEventButton = ({ event }: JoinEventButtonProps) => {
             try {
                   setIsJoining(true);
                   setMessage(null);
+                      // jwt token verification 
+                              const { data: authToken } = await authClient.token();
+                              const token = authToken?.token
+                              console.log("auth",authToken)
 
                   const response = await fetch(
                         `${process.env.NEXT_PUBLIC_BACKEND_URL}/events/joined`,
@@ -33,6 +38,7 @@ const JoinEventButton = ({ event }: JoinEventButtonProps) => {
                               method: "POST",
                               headers: {
                                     "Content-Type": "application/json",
+                                    authorization: `Bearer ${token}`
                               },
                               body: JSON.stringify({
                                     ...event,
