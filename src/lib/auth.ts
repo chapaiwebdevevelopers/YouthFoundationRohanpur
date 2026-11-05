@@ -20,5 +20,12 @@ export const auth = betterAuth({
   database: mongodbAdapter(db, {
     client,
   }),
-   plugins: [jwt()]
+   plugins: [jwt()],
+       session:{
+      cookieCache:{
+        enabled:true,
+        strategy:'jwt',
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+      }
+    }
 });

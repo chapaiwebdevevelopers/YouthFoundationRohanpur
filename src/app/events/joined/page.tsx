@@ -11,13 +11,27 @@ import React from 'react';
 const MyJoinedEvent = async() => {
     const session = await auth.api.getSession({
     headers: await headers(),
-  });
+     });
     const user = session?.user
-    console.log(user)
+    // console.log(user)
+     // jwt token 
+    const jwtToken = await auth.api.getToken({
+      headers:await headers(),
+    })
+    const token = jwtToken?.token;
+    console.log("token:",token)
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/events/joined/${user?.email}`)
+
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/events/joined/${user?.email}`,{
+      headers:{
+        Authorization:`Bearer ${token}`
+      }
+    })
     const events = await response.json()
     console.log(events)
+
+ 
     return (
         
             events.length>0 ? <>
@@ -37,7 +51,7 @@ const MyJoinedEvent = async() => {
   </div>
 
   <h2 className="text-2xl font-bold tracking-tight">
-    You Haven't Joined Any Events Yet
+    You Have not Joined Any Events Yet
   </h2>
 
   <p className="mt-3 max-w-md text-muted-foreground">
