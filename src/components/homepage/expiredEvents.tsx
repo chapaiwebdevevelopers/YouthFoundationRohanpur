@@ -9,7 +9,7 @@ import { IEventItem } from "@/type/event";
 
 
 const ExpiredEvents = async() => {
-    const response= await fetch('http://localhost:8000/events/expired');
+    const response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/events/expired`);
     //extract expired events
   const expiredEvents =await response.json()
 //   console.log("expired",expiredEvents)

@@ -1,15 +1,16 @@
+
 import Newsletter from '@/components/homepage/newsletter';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { CalendarDays, Clock, Heart, Mail, MapPin, Share2 } from 'lucide-react';
+import JoinEventButton from '@/components/event/JoinEventButton';
+import { CalendarDays, Clock, Heart, MapPin, Share2 } from 'lucide-react';
 import Image from 'next/image';
-import React from 'react';
 
 const SingleEventPage = async ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
-    const response = await fetch(`http://localhost:8000/events/${id}`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/events/${id}`);
     const event = await response.json();
     // console.log(event);
        const eventDate = new Date(event.date);
@@ -159,9 +160,7 @@ const SingleEventPage = async ({ params }: { params: Promise<{ id: string }> }) 
                 <Separator />
 
                 <div className="flex flex-col gap-2 pt-1">
-                  <Button className="w-full bg-green-600 hover:bg-green-700">
-                    Join This Event
-                  </Button>
+                  <JoinEventButton event={event} />
                   <div className="flex gap-2">
                     <Button variant="outline" className="flex-1">
                       <Heart className="mr-2 size-4" />

@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 
 const EventPage =async () => {
-   const response = await fetch(`http://localhost:8000/events/upcoming`)
+   const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/events/upcoming`)
   const upcomingEvents = await response.json()
 console.log(upcomingEvents);
 

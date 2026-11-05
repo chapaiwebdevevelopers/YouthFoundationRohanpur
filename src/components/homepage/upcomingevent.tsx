@@ -9,7 +9,7 @@ import EventCard from "../sharedComponent/EventCard";
 import { IEventItem } from "@/type/event";
 
 export  default async function  Events() {
-  const response = await fetch(`http://localhost:8000/events/upcoming`)
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/events/upcoming`)
   const UpcomingEvents = await response.json()
   console.log(UpcomingEvents)
   

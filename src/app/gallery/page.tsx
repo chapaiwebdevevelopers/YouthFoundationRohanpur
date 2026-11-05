@@ -11,7 +11,7 @@ import { IEventItem } from "@/type/event";
 
 
 export default async function GalleryPage() {
-  const response = await fetch(`http://localhost:8000/events`)
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/events`)
   const events =await  response.json()
   console.log("event from gallery",events)
   return (

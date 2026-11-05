@@ -101,7 +101,7 @@ export  default  function  CreateEventPage() {
       console.log("Session Data:", userId);
       const eventDataWithUserId = { ...data, userEmail,userId,date}; // Add the user ID to the event data
 
-            const response = await fetch(`http://localhost:8000/events`,{
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/events`,{
                 method: 'POST',
                 headers:{
                     'Content-Type': 'application/json'
