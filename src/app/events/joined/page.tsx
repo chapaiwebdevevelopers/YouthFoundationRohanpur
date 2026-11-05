@@ -68,11 +68,12 @@ const MyJoinedEvent = async() => {
     beautiful memories together.
   </p>
 
-  <Button className="mt-6" asChild>
-    <Link href="/events">
-      Explore Events
-    </Link>
-  </Button>
+  <Link
+    href="/events"
+    className="mt-6 inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+  >
+    Explore Events
+  </Link>
 </div>
             </>
         
